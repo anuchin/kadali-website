@@ -48,30 +48,30 @@ const galleryPreview = selectedGallery?.data.photos.slice(0, 6) ?? [];
       </div>
     )
   }
-  <header class="relative isolate flex min-h-[92svh] flex-col justify-end overflow-hidden bg-leaf text-paper md:min-h-[690px] md:h-[min(860px,100svh)] md:flex-row md:items-center"
-    style="background:radial-gradient(ellipse at 74% 30%,#526344 0%,#33452e 37%,#1e2b20 78%)">
-    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(220,195,135,.045) 75px 76px)" aria-hidden="true"></div>
+  <header class="relative isolate flex min-h-[92svh] flex-col justify-end overflow-hidden bg-paper text-ink md:min-h-[690px] md:h-[min(860px,100svh)] md:flex-row md:items-center"
+    style="background:radial-gradient(ellipse at 74% 30%,#fbf7ec 0%,#f6f0e4 40%,#ece0c8 85%)">
+    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(198,154,76,.05) 75px 76px)" aria-hidden="true"></div>
     <div class="relative z-[4] px-1 pb-2 md:w-[52%] md:pt-5">
-      <div class="hero-rise flex items-center gap-3 font-sans text-[10px] font-semibold uppercase tracking-[.2em] text-[#e1bd78]">
+      <div class="hero-rise flex items-center gap-3 font-sans text-[10px] font-semibold uppercase tracking-[.2em] text-rust">
         <span class="h-px w-7 bg-current"></span> Kadali Mahila Samaj · Karnataka
       </div>
       <h1 class="hero-rise mt-4 mb-2.5 font-serif text-[clamp(38px,10.5vw,56px)] leading-[1.15] tracking-tight md:text-[clamp(48px,6.5vw,88px)]" data-delay="1">
-        {hero.heroTitle}<br /><em class="not-italic text-[#e4c17f]">{hero.heroHighlight}</em>
+        {hero.heroTitle}<br /><em class="not-italic text-rust">{hero.heroHighlight}</em>
       </h1>
-      <p class="hero-rise m-0 max-w-[34ch] text-[16px] leading-relaxed text-[rgba(246,240,228,.8)] md:max-w-[44ch] md:text-[clamp(17px,1.7vw,21px)]" data-delay="2">{hero.heroDescription}</p>
+      <p class="hero-rise m-0 max-w-[34ch] text-[16px] leading-relaxed text-muted md:max-w-[44ch] md:text-[clamp(17px,1.7vw,21px)]" data-delay="2">{hero.heroDescription}</p>
       <div class="hero-rise mt-5 flex flex-wrap gap-2.5" data-delay="3">
         <a href="/about" class="btn btn-gold inline-flex min-h-[46px] items-center gap-2.5 rounded-full bg-gold2 px-4 font-sans text-xs font-semibold text-ink">ಕದಳಿಯನ್ನು ಅರಿಯಿರಿ <span>↗</span></a>
-        <a href="/articles" class="btn inline-flex min-h-[46px] items-center gap-2.5 rounded-full border border-[rgba(246,240,228,.42)] px-4 font-sans text-xs font-semibold">ನಮ್ಮ ಬರಹಗಳನ್ನು ಓದಿ</a>
+        <a href="/articles" class="btn inline-flex min-h-[46px] items-center gap-2.5 rounded-full border border-[rgba(43,32,26,.35)] px-4 font-sans text-xs font-semibold">ನಮ್ಮ ಬರಹಗಳನ್ನು ಓದಿ</a>
       </div>
     </div>
     <div class="relative z-[1] mt-8 w-[118%] self-center md:absolute md:right-[-1.5%] md:bottom-[-4%] md:mt-0 md:h-[92%] md:w-[min(58%,780px)]" aria-label="ಅಕ್ಕ ಮಹಾದೇವಿಯ ಚಿತ್ರ">
       <div class="relative w-full" style="aspect-ratio:1039/627">
         <div class="halo absolute z-0" style="top:19%;left:51%;width:33%;aspect-ratio:1;margin:-16.5% 0 0 -16.5%" aria-hidden="true"><span class="halo-glint"></span></div>
         <Image src={heroArt} alt="ಅಕ್ಕ ಮಹಾದೇವಿ" widths={[480, 780, 1039]} sizes="(max-width: 768px) 118vw, 58vw"
-          class="absolute inset-0 h-full w-full object-contain object-bottom [filter:drop-shadow(0_20px_28px_rgba(0,0,0,.22))]" loading="eager" />
+          class="absolute inset-0 h-full w-full object-contain object-bottom [filter:drop-shadow(0_20px_28px_rgba(60,40,20,.18))]" loading="eager" />
       </div>
     </div>
-    <a href="#intro" class="scroll-cue relative z-[4] mb-5 ml-1 mt-5 inline-flex items-center gap-2.5 font-sans text-[10px] uppercase tracking-[.15em] text-[rgba(246,240,228,.68)] md:absolute md:bottom-6 md:left-1/2 md:-translate-x-1/2"><b></b> Scroll</a>
+    <a href="#intro" class="scroll-cue relative z-[4] mb-5 ml-1 mt-5 inline-flex items-center gap-2.5 font-sans text-[10px] uppercase tracking-[.15em] text-muted md:absolute md:bottom-6 md:left-1/2 md:-translate-x-1/2"><b></b> Scroll</a>
   </header>
 
   <main>
@@ -109,15 +109,15 @@ const galleryPreview = selectedGallery?.data.photos.slice(0, 6) ?? [];
         <SectionHead kicker="ಒಟ್ಟಾಗಿ ಆಚರಿಸೋಣ · GATHER" title="ಮುಂಬರುವ ಕಾರ್ಯಕ್ರಮಗಳು" description="ಒಟ್ಟಾಗಿ ಸೇರುವ ಕ್ಷಣಗಳೇ ಸಮುದಾಯವನ್ನು ಕಟ್ಟುತ್ತವೆ." link={{ href: '/events', label: 'ಎಲ್ಲ ಕಾರ್ಯಕ್ರಮಗಳು' }} />
         <div class="grid gap-4 md:grid-cols-2">
           {featuredEvent && (
-            <div class="reveal flex flex-col overflow-hidden rounded-[4px_4px_18px_18px] bg-leaf text-paper shadow-[0_20px_60px_rgba(61,48,31,.09)] md:col-span-2 md:flex-row">
-              <div class="relative grid h-44 flex-none place-items-center overflow-hidden bg-[linear-gradient(135deg,#3d4a30,#1f2c20)] text-7xl text-gold2 [filter:drop-shadow(0_0_28px_rgba(223,189,122,.25))] md:w-[36%] md:h-auto">🪔
-                <span class="absolute inset-[8%_26%_5%] rounded-[50%_50%_44%_44%/36%_36%_58%_58%] border border-dotted border-[rgba(223,189,122,.45)]" aria-hidden="true"></span>
+            <div class="reveal flex flex-col overflow-hidden rounded-[4px_4px_18px_18px] border border-[rgba(126,77,52,.32)] bg-[rgba(255,255,255,.45)] text-ink shadow-[0_20px_60px_rgba(61,48,31,.09)] md:col-span-2 md:flex-row">
+              <div class="relative grid h-44 flex-none place-items-center overflow-hidden bg-[rgba(198,154,76,.14)] text-7xl text-rust md:w-[36%] md:h-auto">🪔
+                <span class="absolute inset-[8%_26%_5%] rounded-[50%_50%_44%_44%/36%_36%_58%_58%] border border-dotted border-[rgba(142,57,44,.3)]" aria-hidden="true"></span>
               </div>
               <div class="flex flex-col justify-center p-6 md:p-9">
-                <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-gold2">ಮುಂದಿನ ಕಾರ್ಯಕ್ರಮ · FEATURED</div>
+                <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-rust">ಮುಂದಿನ ಕಾರ್ಯಕ್ರಮ · FEATURED</div>
                 <h3 class="my-3 font-serif text-[clamp(26px,7vw,40px)] leading-tight"><a href={`/events/${featuredEvent.id}/`} class="hover:underline">{featuredEvent.data.title}</a></h3>
-                <p class="m-0 mb-4 text-[15px] text-[rgba(246,240,228,.75)]">{featuredEvent.data.shortDescription}</p>
-                <div class="grid gap-1.5 font-sans text-xs text-[#e4c98f]">
+                <p class="m-0 mb-4 text-[15px] text-muted">{featuredEvent.data.shortDescription}</p>
+                <div class="grid gap-1.5 font-sans text-xs text-muted">
                   <span>◷ {fmtDate(featuredEvent.data.start)}</span>
                   {featuredEvent.data.venue && <span>⌖ {featuredEvent.data.venue}</span>}
                 </div>
@@ -155,13 +155,13 @@ const galleryPreview = selectedGallery?.data.photos.slice(0, 6) ?? [];
       )
     }
 
-    <section class="relative overflow-hidden bg-leaf py-14 text-paper md:py-[72px]">
-      <span class="pointer-events-none absolute right-[6%] top-[-70px] font-serif text-[280px] leading-none text-[rgba(223,189,122,.07)]" aria-hidden="true">ಕ</span>
+    <section class="relative overflow-hidden bg-paper2 py-14 text-ink md:py-[72px]">
+      <span class="pointer-events-none absolute right-[6%] top-[-70px] font-serif text-[280px] leading-none text-[rgba(142,57,44,.06)]" aria-hidden="true">ಕ</span>
       <div class="reveal mx-auto flex max-w-6xl flex-col items-start gap-5 px-4 md:flex-row md:items-center md:justify-between md:px-6">
         <div>
-          <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-gold2">ನಿಮ್ಮನ್ನು ಸ್ವಾಗತಿಸುತ್ತೇವೆ</div>
+          <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-rust">ನಿಮ್ಮನ್ನು ಸ್ವಾಗತಿಸುತ್ತೇವೆ</div>
           <h2 class="my-2 font-serif text-[clamp(30px,8.5vw,56px)] leading-tight">ಬನ್ನಿ, ನಮ್ಮೊಂದಿಗೆ ಬೆಸೆಯಿರಿ.</h2>
-          <p class="m-0 max-w-[52ch] text-[15px] text-[rgba(246,240,228,.75)]">ನಮ್ಮ ಕಾರ್ಯಕ್ರಮಗಳ ಬಗ್ಗೆ ತಿಳಿಯಲು, ಸದಸ್ಯರಾಗಲು ಅಥವಾ ನಿಮ್ಮ ಬರಹಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ.</p>
+          <p class="m-0 max-w-[52ch] text-[15px] text-muted">ನಮ್ಮ ಕಾರ್ಯಕ್ರಮಗಳ ಬಗ್ಗೆ ತಿಳಿಯಲು, ಸದಸ್ಯರಾಗಲು ಅಥವಾ ನಿಮ್ಮ ಬರಹಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ.</p>
         </div>
         <a href="/contact" class="btn btn-gold inline-flex min-h-[46px] flex-none items-center gap-2.5 rounded-full bg-gold2 px-5 font-sans text-xs font-semibold text-ink">ಸಂಪರ್ಕಿಸಿ <span>↗</span></a>
       </div>

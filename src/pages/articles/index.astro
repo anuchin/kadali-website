@@ -19,12 +19,12 @@ const cards = articles.map((a) => ({
 }));
 ---
 <Base title="ಲೇಖನಗಳು" description="ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜದ ಎಲ್ಲ ಬರಹಗಳು — ವಚನ ಚಿಂತನೆ, ಸ್ಮರಣೆ, ಸಂಸ್ಕೃತಿ ಮತ್ತು ಸಮುದಾಯದ ಕಥೆಗಳು.">
-  <header class="relative overflow-hidden bg-leaf px-4 pb-10 pt-32 text-paper md:px-6 md:pt-40">
-    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(220,195,135,.045) 75px 76px)" aria-hidden="true"></div>
+  <header class="relative overflow-hidden bg-paper2 px-4 pb-10 pt-32 text-ink md:px-6 md:pt-40">
+    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(198,154,76,.05) 75px 76px)" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-6xl">
-      <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-gold2">ಕದಳಿಯ ಬರಹಗಳು · THE JOURNAL</div>
+      <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-rust">ಕದಳಿಯ ಬರಹಗಳು · THE JOURNAL</div>
       <h1 class="mt-2.5 mb-2 font-serif text-[clamp(30px,8vw,52px)] tracking-tight">ನಮ್ಮ ಕಥೆಗಳು, ನಮ್ಮ ಮಾತು</h1>
-      <p class="m-0 max-w-[56ch] text-[15px] text-[rgba(246,240,228,.75)]">ಟ್ಯಾಗ್ ಮತ್ತು ಹುಡುಕಾಟದ ಮೂಲಕ ನಮ್ಮದೇ ಧ್ವನಿಯಲ್ಲಿ ಹೇಳುವ ಕಥೆಗಳನ್ನು ಅರಿಯಿರಿ.</p>
+      <p class="m-0 max-w-[56ch] text-[15px] text-muted">ಟ್ಯಾಗ್ ಮತ್ತು ಹುಡುಕಾಟದ ಮೂಲಕ ನಮ್ಮದೇ ಧ್ವನಿಯಲ್ಲಿ ಹೇಳುವ ಕಥೆಗಳನ್ನು ಅರಿಯಿರಿ.</p>
     </div>
   </header>
 
@@ -69,7 +69,7 @@ const cards = articles.map((a) => ({
       <a href="${c.href}" class="card lift arch-card flex flex-col overflow-hidden border border-[rgba(126,77,52,.32)] bg-[rgba(255,255,255,.3)]">
         ${c.cover
           ? `<img src="${c.cover}" alt="" loading="lazy" class="arch-thumb h-32 w-full flex-none object-cover md:h-36">`
-          : `<div class="arch-thumb relative grid h-32 flex-none place-items-center bg-leaf text-3xl text-[#e1bd78] md:h-36" style="background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 7px,transparent 7px 14px)"><span class="font-serif">${c.glyph}</span><span class="absolute inset-2.5 rounded-[999px_999px_4px_4px] border border-[rgba(225,189,120,.4)]" aria-hidden="true"></span></div>`}
+          : `<div class="arch-thumb relative grid h-32 flex-none place-items-center bg-[rgba(198,154,76,.14)] text-3xl text-rust md:h-36" style="background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 7px,transparent 7px 14px)"><span class="font-serif">${c.glyph}</span><span class="absolute inset-2.5 rounded-[999px_999px_4px_4px] border border-[rgba(142,57,44,.3)]" aria-hidden="true"></span></div>`}
         <div class="flex flex-1 flex-col gap-1.5 p-4 pb-5">
           <small class="font-sans text-[10px] font-semibold uppercase tracking-[.14em] text-rust">${fmt(c.date)} · ${c.category}</small>
           <h3 class="font-serif text-[19px] leading-snug [overflow-wrap:anywhere]">${c.title}</h3>

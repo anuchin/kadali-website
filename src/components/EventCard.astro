@@ -10,7 +10,7 @@ const { title, shortDescription, poster, start, end, venue, cancelled } = event.
 const status = eventStatus(start, end, cancelled);
 const glyph = title.charAt(0);
 const tone =
-  status === 'cancelled' ? 'bg-[#6d5350]' : status === 'past' ? 'bg-leaf2' : 'bg-leaf';
+  status === 'cancelled' ? 'bg-[rgba(142,57,44,.1)]' : status === 'past' ? 'bg-[rgba(118,103,90,.12)]' : 'bg-[rgba(198,154,76,.14)]';
 ---
 <a href={`/events/${event.id}/`} class="card lift arch-card flex flex-col overflow-hidden border border-[rgba(126,77,52,.32)] bg-[rgba(255,255,255,.3)]">
   {
@@ -18,10 +18,10 @@ const tone =
       <img src={poster.src} alt={title} width={640} height={360} loading="lazy"
         class="arch-thumb h-32 w-full flex-none object-cover md:h-36" />
     ) : (
-      <div class={`arch-thumb relative grid h-32 flex-none place-items-center text-3xl text-[#e1bd78] md:h-36 ${tone}`}
+      <div class={`arch-thumb relative grid h-32 flex-none place-items-center text-3xl text-rust md:h-36 ${tone}`}
         style="background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 7px,transparent 7px 14px)">
         <span class="font-serif">{glyph}</span>
-        <span class="absolute inset-2.5 rounded-[999px_999px_4px_4px] border border-[rgba(225,189,120,.4)]" aria-hidden="true"></span>
+        <span class="absolute inset-2.5 rounded-[999px_999px_4px_4px] border border-[rgba(142,57,44,.3)]" aria-hidden="true"></span>
       </div>
     )
   }

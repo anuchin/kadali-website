@@ -9,5 +9,11 @@ export default defineConfig({
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
+    // Windows + mapped drives: ignore editor/service temp dirs that crash the watcher (EBUSY)
+    server: {
+      watch: {
+        ignored: ['**/*.tmpdir/**', '**/.tsc-check/**', '**/.*.tmp/*', '**/.config.yml.*'],
+      },
+    },
   },
 });

@@ -9,12 +9,12 @@ const upcoming = all.filter((e) => e.data.start.getTime() >= now && !e.data.canc
 const past = all.filter((e) => e.data.start.getTime() < now || e.data.cancelled);
 ---
 <Base title="ಕಾರ್ಯಕ್ರಮಗಳು" description="ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜದ ಕಾರ್ಯಕ್ರಮಗಳು — ಸತ್ಸಂಗ, ಹಬ್ಬ, ಸಾಹಿತ್ಯ ವಾಚನ.">
-  <header class="relative overflow-hidden bg-leaf px-4 pb-10 pt-32 text-paper md:px-6 md:pt-40">
-    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(220,195,135,.045) 75px 76px)" aria-hidden="true"></div>
+  <header class="relative overflow-hidden bg-paper2 px-4 pb-10 pt-32 text-ink md:px-6 md:pt-40">
+    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(198,154,76,.05) 75px 76px)" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-6xl">
-      <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-gold2">ಒಟ್ಟಾಗಿ ಆಚರಿಸೋಣ · GATHER</div>
+      <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-rust">ಒಟ್ಟಾಗಿ ಆಚರಿಸೋಣ · GATHER</div>
       <h1 class="mt-2.5 mb-2 font-serif text-[clamp(30px,8vw,52px)] tracking-tight">ಕಾರ್ಯಕ್ರಮಗಳು</h1>
-      <p class="m-0 max-w-[56ch] text-[15px] text-[rgba(246,240,228,.75)]">ಸತ್ಸಂಗ, ಹಬ್ಬ, ಸಾಹಿತ್ಯ ವಾಚನ — ಸಮುದಾಯದ ಎಲ್ಲ ಸಮಾಗಮಗಳು.</p>
+      <p class="m-0 max-w-[56ch] text-[15px] text-muted">ಸತ್ಸಂಗ, ಹಬ್ಬ, ಸಾಹಿತ್ಯ ವಾಚನ — ಸಮುದಾಯದ ಎಲ್ಲ ಸಮಾಗಮಗಳು.</p>
     </div>
   </header>
 
