@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+
+const articles = (await getCollection('articles', (a) => !a.data.draft))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const categories = [...new Set(articles.map((a) => a.data.category))];
+
+const cards = articles.map((a) => ({
+  id: a.id,
+  title: a.data.title,
+  excerpt: a.data.excerpt,
+  date: a.data.pubDate.toISOString().slice(0, 10),
+  category: a.data.category,
+  cover: a.data.cover?.src ?? '',
+  href: `/articles/${a.id}/`,
+  glyph: a.data.title.charAt(0),
+}));
+---
+<Base title="ಲೇಖನಗಳು" description="ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜದ ಎಲ್ಲ ಬರಹಗಳು — ವಚನ ಚಿಂತನೆ, ಸ್ಮರಣೆ, ಸಂಸ್ಕೃತಿ ಮತ್ತು ಸಮುದಾಯದ ಕಥೆಗಳು.">
+  <header class="relative overflow-hidden bg-leaf px-4 pb-10 pt-32 text-paper md:px-6 md:pt-40">
+    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(220,195,135,.045) 75px 76px)" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl">
+      <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-gold2">ಕದಳಿಯ ಬರಹಗಳು · THE JOURNAL</div>
+      <h1 class="mt-2.5 mb-2 font-serif text-[clamp(30px,8vw,52px)] tracking-tight">ನಮ್ಮ ಕಥೆಗಳು, ನಮ್ಮ ಮಾತು</h1>
+      <p class="m-0 max-w-[56ch] text-[15px] text-[rgba(246,240,228,.75)]">ಟ್ಯಾಗ್ ಮತ್ತು ಹುಡುಕಾಟದ ಮೂಲಕ ನಮ್ಮದೇ ಧ್ವನಿಯಲ್ಲಿ ಹೇಳುವ ಕಥೆಗಳನ್ನು ಅರಿಯಿರಿ.</p>
+    </div>
+  </header>
+
+  <section class="py-10 md:py-14">
+    <div class="mx-auto max-w-6xl px-4 md:px-6">
+      <div class="mb-6 flex flex-col gap-3">
+        <div class="flex items-center gap-2.5 rounded-full border border-[rgba(126,77,52,.32)] bg-[rgba(255,255,255,.4)] px-4 py-1.5">
+          <span aria-hidden="true" class="text-muted">⌕</span>
+          <input id="article-search" type="search" placeholder="ಬರಹಗಳನ್ನು ಹುಡುಕಿ…" aria-label="ಬರಹಗಳನ್ನು ಹುಡುಕಿ"
+            class="w-full min-w-0 border-0 bg-transparent py-2 font-kn text-[15px] outline-none placeholder:text-muted" />
+        </div>
+        <div id="category-bar" class="flex flex-wrap gap-2">
+          <button class="tag rounded-full border border-[rgba(126,77,52,.32)] bg-[rgba(198,154,76,.07)] px-2.5 py-1 font-sans text-[11px] font-semibold text-rust" data-cat="all">ಎಲ್ಲವೂ</button>
+          {categories.map((c) => (
+            <button class="tag rounded-full border border-[rgba(126,77,52,.32)] bg-[rgba(198,154,76,.07)] px-2.5 py-1 font-sans text-[11px] font-semibold text-rust" data-cat={c}>#{c}</button>
+          ))}
+        </div>
+        <div id="result-count" class="font-sans text-xs text-muted"></div>
+      </div>
+      <div id="article-grid" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+      <script type="application/json" id="article-data" set:html={JSON.stringify(cards)} />
+      <noscript>
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {articles.map((a) => <ArticleCard article={a} />)}
+        </div>
+      </noscript>
+    </div>
+  </section>
+</Base>
+<script>
+  const grid = document.getElementById('article-grid')!;
+  const cards: Array<{ id: string; title: string; excerpt: string; date: string; category: string; cover: string; href: string; glyph: string }> =
+    JSON.parse(document.getElementById('article-data')!.textContent!);
+  const kM = ['ಜನವರಿ','ಫೆಬ್ರವರಿ','ಮಾರ್ಚ್','ಏಪ್ರಿಲ್','ಮೇ','ಜೂನ್','ಜುಲೈ','ಆಗಸ್ಟ್','ಸೆಪ್ಟೆಂಬರ್','ಅಕ್ಟೋಬರ್','ನವೆಂಬರ್','ಡಿಸೆಂಬರ್'];
+  const fmt = (iso: string) => { const [y, m, d] = iso.split('-').map(Number); return `${d} ${kM[m - 1]} ${y}`; };
+  let cat = 'all', q = '';
+  const render = () => {
+    const list = cards.filter((c) =>
+      (cat === 'all' || c.category === cat) &&
+      (!q || (c.title + c.excerpt + c.category).toLowerCase().includes(q)));
+    grid.innerHTML = list.length ? list.map((c) => `
+      <a href="${c.href}" class="card lift arch-card flex flex-col overflow-hidden border border-[rgba(126,77,52,.32)] bg-[rgba(255,255,255,.3)]">
+        ${c.cover
+          ? `<img src="${c.cover}" alt="" loading="lazy" class="arch-thumb h-32 w-full flex-none object-cover md:h-36">`
+          : `<div class="arch-thumb relative grid h-32 flex-none place-items-center bg-leaf text-3xl text-[#e1bd78] md:h-36" style="background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 7px,transparent 7px 14px)"><span class="font-serif">${c.glyph}</span><span class="absolute inset-2.5 rounded-[999px_999px_4px_4px] border border-[rgba(225,189,120,.4)]" aria-hidden="true"></span></div>`}
+        <div class="flex flex-1 flex-col gap-1.5 p-4 pb-5">
+          <small class="font-sans text-[9px] font-semibold uppercase tracking-[.14em] text-rust">${fmt(c.date)} · ${c.category}</small>
+          <h3 class="font-serif text-[19px] leading-snug [overflow-wrap:anywhere]">${c.title}</h3>
+          <p class="m-0 text-[13px] leading-normal text-muted line-clamp-3">${c.excerpt}</p>
+          <span class="mt-auto pt-2.5 font-sans text-[11px] text-muted">ಓದಿ ↗</span>
+        </div></a>`).join('')
+      : '<p class="col-span-full py-10 text-center text-[15px] text-muted">ಹೊಂದುವ ಬರಹಗಳು ಸಿಗಲಿಲ್ಲ. ಬೇರೆ ಪದ ಅಥವಾ ಟ್ಯಾಗ್ ಪ್ರಯತ್ನಿಸಿ.</p>';
+    document.getElementById('result-count')!.textContent = `${list.length} ಬರಹ${cat !== 'all' ? ' · ' + cat : ''}`;
+  };
+  document.getElementById('category-bar')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest('.tag') as HTMLElement | null;
+    if (!b) return;
+    cat = b.dataset.cat!;
+    document.querySelectorAll('#category-bar .tag').forEach((x) => x.classList.toggle('bg-leaf', x === b));
+    document.querySelectorAll('#category-bar .tag').forEach((x) => x.classList.toggle('text-[#f1d9a2]', x === b));
+    render();
+  });
+  document.getElementById('article-search')!.addEventListener('input', (e) => {
+    q = (e.target as HTMLInputElement).value.trim().toLowerCase();
+    render();
+  });
+  render();
+</script>

@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="ಸಂಪರ್ಕಿಸಿ" description="ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜವನ್ನು ಸಂಪರ್ಕಿಸಿ — ಸದಸ್ಯತ್ವ, ಕಾರ್ಯಕ್ರಮಗಳು, ಬರಹಗಳ ಕಳುಹಿಸುವಿಕೆ.">
+  <header class="relative overflow-hidden bg-leaf px-4 pb-10 pt-32 text-paper md:px-6 md:pt-40">
+    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(220,195,135,.045) 75px 76px)" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl">
+      <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-gold2">ನಿಮ್ಮನ್ನು ಸ್ವಾಗತಿಸುತ್ತೇವೆ</div>
+      <h1 class="mt-2.5 mb-2 font-serif text-[clamp(30px,8vw,52px)] tracking-tight">ಬನ್ನಿ, ನಮ್ಮೊಂದಿಗೆ ಬೆಸೆಯಿರಿ.</h1>
+      <p class="m-0 max-w-[56ch] text-[15px] text-[rgba(246,240,228,.75)]">ನಮ್ಮ ಕಾರ್ಯಕ್ರಮಗಳ ಬಗ್ಗೆ ತಿಳಿಯಲು, ಸದಸ್ಯರಾಗಲು ಅಥವಾ ನಿಮ್ಮ ಬರಹಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಈ ಫಾರ್ಮ್ ಬಳಸಿ.</p>
+    </div>
+  </header>
+
+  <section class="py-12">
+    <div class="mx-auto max-w-6xl px-4 md:px-6">
+      <form class="reveal mx-auto grid max-w-[560px] gap-3.5 rounded-[28px_28px_14px_14px] border border-[rgba(126,77,52,.32)] bg-[rgba(255,255,255,.45)] p-6" action="mailto:hello@kadali.example.org" method="post" enctype="text/plain">
+        <div class="grid gap-1.5">
+          <label for="f-name" class="font-sans text-[11px] font-semibold uppercase tracking-[.08em] text-muted">ಹೆಸರು</label>
+          <input id="f-name" name="name" type="text" required autocomplete="name" class="rounded-xl border border-[rgba(126,77,52,.32)] bg-[#fdfaf3] px-3.5 py-3 font-kn text-[15px] outline-none focus:border-gold focus:shadow-[0_0_0_3px_rgba(198,154,76,.18)]" />
+        </div>
+        <div class="grid gap-1.5">
+          <label for="f-phone" class="font-sans text-[11px] font-semibold uppercase tracking-[.08em] text-muted">ದೂರವಾಣಿ (ಐಚ್ಛಿಕ)</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" class="rounded-xl border border-[rgba(126,77,52,.32)] bg-[#fdfaf3] px-3.5 py-3 font-kn text-[15px] outline-none focus:border-gold focus:shadow-[0_0_0_3px_rgba(198,154,76,.18)]" />
+        </div>
+        <div class="grid gap-1.5">
+          <label for="f-topic" class="font-sans text-[11px] font-semibold uppercase tracking-[.08em] text-muted">ಉದ್ದೇಶ</label>
+          <select id="f-topic" name="topic" class="rounded-xl border border-[rgba(126,77,52,.32)] bg-[#fdfaf3] px-3.5 py-3 font-kn text-[15px] outline-none focus:border-gold">
+            <option>ಸದಸ್ಯತ್ವದ ಬಗ್ಗೆ ತಿಳಿಯಲು</option>
+            <option>ಕಾರ್ಯಕ್ರಮಗಳ ಬಗ್ಗೆ</option>
+            <option>ನನ್ನ ಬರಹವನ್ನು ಕಳುಹಿಸಲು</option>
+            <option>ಇತರ</option>
+          </select>
+        </div>
+        <div class="grid gap-1.5">
+          <label for="f-msg" class="font-sans text-[11px] font-semibold uppercase tracking-[.08em] text-muted">ಸಂದೇಶ</label>
+          <textarea id="f-msg" name="message" required class="min-h-32 resize-y rounded-xl border border-[rgba(126,77,52,.32)] bg-[#fdfaf3] px-3.5 py-3 font-kn text-[15px] outline-none focus:border-gold focus:shadow-[0_0_0_3px_rgba(198,154,76,.18)]"></textarea>
+        </div>
+        <button type="submit" class="btn btn-gold mt-1 inline-flex min-h-[46px] items-center justify-self-start gap-2.5 rounded-full bg-gold2 px-5 font-sans text-xs font-semibold text-ink">ಕಳುಹಿಸಿ <span>↗</span></button>
+        <p class="m-0 font-sans text-xs text-muted">ಅಥವಾ ನೇರವಾಗಿ ಇಮೇಲ್ ಮಾಡಿ: hello@kadali.example.org</p>
+      </form>
+    </div>
+  </section>
+</Base>

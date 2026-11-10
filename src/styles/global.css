@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/* ===== Kadali design tokens ===== */
+@theme {
+  --color-paper: #f6f0e4;
+  --color-paper2: #eee4d2;
+  --color-paper3: #e8e2d0;
+  --color-ink: #2b201a;
+  --color-muted: #76675a;
+  --color-rust: #8e392c;
+  --color-rust2: #b65b42;
+  --color-leaf: #33452e;
+  --color-leaf2: #536746;
+  --color-gold: #c69a4c;
+  --color-gold2: #dfbd7a;
+
+  --font-serif: "Tiro Kannada", Georgia, serif;
+  --font-kn: "Hubballi", system-ui, sans-serif;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+
+  --ease-out-k: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-io-k: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* ===== base ===== */
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-kn);
+  font-size: 17px;
+  line-height: 1.65;
+  overflow-x: clip;
+}
+::selection { background: #d6b67a; }
+button, a { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--color-rust); outline-offset: 4px; }
+
+/* paper grain overlay */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .12;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+}
+
+/* ===== motifs ===== */
+/* bead rule: string-of-seeds divider */
+.bead-rule::after {
+  content: ""; display: block; height: 9px; margin-top: 10px; opacity: .5;
+  background-image: radial-gradient(ellipse 3px 4px at 4px 4px, transparent 35%, rgba(142,57,44,.52) 45%, rgba(142,57,44,.52) 54%, transparent 64%);
+  background-size: 16px 9px; background-repeat: repeat-x;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+/* temple-arch top on cards */
+.arch-card { border-radius: 999px 999px 12px 12px; }
+.arch-thumb { border-radius: 999px 999px 6px 6px; }
+/* dotted seed outline used on ornamental frames */
+.seed-frame { outline: 1px dotted rgba(126,77,52,.45); outline-offset: 5px; }
+
+/* hero halo */
+.halo {
+  border: 1px solid rgba(235,194,105,.92); border-radius: 50%;
+  box-shadow: 0 0 0 7px rgba(235,194,105,.06), 0 0 38px rgba(235,194,105,.14), inset 0 0 24px rgba(235,194,105,.1);
+  animation: halo-spin 34s linear infinite;
+}
+.halo::before, .halo::after { content: ""; position: absolute; inset: 10px; border: 1px dashed rgba(235,194,105,.65); border-radius: 50%; }
+.halo::after { inset: -12px; border-style: solid; border-color: rgba(235,194,105,.18); border-left-color: transparent; border-bottom-color: transparent; animation: halo-spin 18s linear infinite reverse; }
+.halo-glint { position: absolute; left: 50%; top: -4px; width: 7px; height: 7px; border-radius: 50%; background: #ffe2a0; box-shadow: 0 0 18px 5px rgba(255,220,145,.6); }
+@keyframes hero-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes halo-spin { to { transform: rotate(360deg); } }
+.hero-rise { opacity: 0; animation: hero-rise .7s var(--ease-out-k) forwards; }
+.hero-rise[data-delay="1"] { animation-delay: .08s; }
+.hero-rise[data-delay="2"] { animation-delay: .16s; }
+.hero-rise[data-delay="3"] { animation-delay: .24s; }
+
+/* press feedback on every pressable */
+.btn { transition: transform .15s var(--ease-out-k), background-color .2s var(--ease-out-k), box-shadow .2s var(--ease-out-k); }
+.btn:active { transform: scale(.96); }
+@media (hover:hover) and (pointer:fine) {
+  .btn-gold:hover { box-shadow: 0 8px 22px rgba(198,154,76,.35); }
+  .lift:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(60,40,20,.14); }
+}
+.card:active { transform: scale(.98); }
+.card, .lift { transition: transform .3s var(--ease-out-k), box-shadow .3s var(--ease-out-k); }
+.tag { transition: transform .15s var(--ease-out-k), background-color .2s var(--ease-out-k); }
+.tag:active { transform: scale(.94); }
+
+/* scroll reveal */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .65s var(--ease-out-k), transform .65s var(--ease-out-k); }
+.reveal.in { opacity: 1; transform: none; }
+.reveal[data-delay="1"] { transition-delay: .1s; }
+.reveal[data-delay="2"] { transition-delay: .2s; }
+.reveal[data-delay="3"] { transition-delay: .3s; }
+
+/* scroll cue */
+.scroll-cue b { display: block; width: 1px; height: 24px; background: #d7b46d; animation: cue 1.8s ease-in-out infinite; }
+@keyframes cue { 0%,100% { transform: scaleY(.65); transform-origin: top; opacity: .5; } 50% { transform: scaleY(1); transform-origin: top; opacity: 1; } }
+
+/* prose (article/event bodies) */
+.prose-kn { max-width: 68ch; }
+.prose-kn p { margin: 0 0 1.2em; font-size: 1.06rem; line-height: 1.85; }
+.prose-kn h2 { font-family: var(--font-serif); font-size: 1.6rem; margin: 1.6em 0 .6em; letter-spacing: -.02em; }
+.prose-kn ul, .prose-kn ol { margin: 0 0 1.2em; padding-inline-start: 1.4em; }
+.prose-kn li { margin-bottom: .4em; }
+.prose-kn blockquote {
+  margin: 1.6em 0; padding: .9rem 1.25rem; border-left: 3px solid var(--color-gold);
+  background: rgba(198,154,76,.08); font-family: var(--font-serif); font-size: 1.12rem;
+  border-radius: 0 12px 12px 0;
+}
+.prose-kn img { border-radius: 16px 16px 6px 6px; margin: 1.5em 0; }
+.prose-kn a { color: var(--color-rust); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; animation-delay: 0s !important; }
+  .reveal, .hero-rise { opacity: 1; transform: none; }
+}

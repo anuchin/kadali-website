@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="ನಮ್ಮ ಬಗ್ಗೆ" description="ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜದ ಪರಿಚಯ, ಪಯಣ ಮತ್ತು ಸಮಿತಿ.">
+  <header class="relative overflow-hidden bg-leaf px-4 pb-10 pt-32 text-paper md:px-6 md:pt-40">
+    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(220,195,135,.045) 75px 76px)" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl">
+      <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-gold2">ನಮ್ಮ ಸಮಾಜ · OUR PURPOSE</div>
+      <h1 class="mt-2.5 mb-2 font-serif text-[clamp(30px,8vw,52px)] tracking-tight">ಒಂದು ಮನಸ್ಸು. ಅನೇಕ ಹೃದಯಗಳು.</h1>
+      <p class="m-0 max-w-[56ch] text-[15px] text-[rgba(246,240,228,.75)]">ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜವು ಭಕ್ತಿ, ಸಂಸ್ಕೃತಿ, ಸಾಹಿತ್ಯ ಮತ್ತು ಸಮಾಜಸೇವೆಯ ಮೂಲಕ ಮಹಿಳೆಯರನ್ನು ಒಂದೆಡೆ ಸೇರಿಸುವ ಒಂದು ಜೀವಂತ ವೇದಿಕೆ.</p>
+    </div>
+  </header>
+
+  <section class="py-12">
+    <div class="mx-auto max-w-6xl px-4 md:px-6">
+      <div class="reveal max-w-[60ch] text-[17px] leading-[1.8]">
+        <h2 class="font-serif text-[clamp(28px,7vw,40px)] tracking-tight">ನಮ್ಮ ಪಯಣ</h2>
+        <p>ಅಕ್ಕ ಮಹಾದೇವಿಯ ವಚನ ಪರಂಪರೆಯ ಬೆಳಕಿನಲ್ಲಿ ಕದಳಿ ಹುಟ್ಟಿಕೊಂಡಿತು. ಭಕ್ತಿ, ಕಲೆ, ಸೇವೆ ಮತ್ತು ಸಾಹಿತ್ಯ — ಈ ನಾಲ್ಕು ಆಧಾರಸ್ತಂಭಗಳ ಮೇಲೆ ನಮ್ಮ ಸಮುದಾಯ ಬೆಳೆಯುತ್ತಿದೆ. ನಮ್ಮ ಪರಂಪರೆಯನ್ನು ಗೌರವಿಸುತ್ತಾ, ಮುಂದಿನ ಪೀಳಿಗೆಗೆ ಅದನ್ನು ಪ್ರೀತಿಯಿಂದ ತಲುಪಿಸುವುದು ನಮ್ಮ ಪಯಣ.</p>
+      </div>
+      <div class="mt-8 grid gap-3 md:grid-cols-4">
+        {[
+          { icon: '❋', title: 'ಭಕ್ತಿ', desc: 'ಆಧ್ಯಾತ್ಮ, ವಚನಗಳು ಮತ್ತು ಒಳಗಿನ ಅರಿವಿನ ಪಯಣ.' },
+          { icon: '✳', title: 'ಸಂಸ್ಕೃತಿ', desc: 'ಹಬ್ಬ, ಕಲೆ, ಸಂಪ್ರದಾಯ ಮತ್ತು ಜೀವಂತ ಆಚರಣೆಗಳು.' },
+          { icon: '♧', title: 'ಸಮಾಜ ಸೇವೆ', desc: 'ಪರಸ್ಪರ ಬೆಂಬಲ, ಕಾಳಜಿ ಮತ್ತು ಸಮುದಾಯದ ಬೆಳವಣಿಗೆ.' },
+          { icon: '✎', title: 'ಸಾಹಿತ್ಯ', desc: 'ವಚನ, ಬರಹ, ನೆನಪುಗಳು ಮತ್ತು ಮಹಿಳೆಯರ ಧ್ವನಿ.' },
+        ].map((p) => (
+          <div class="reveal rounded-[80px_80px_12px_12px] border border-[rgba(126,77,52,.32)] bg-[rgba(255,255,255,.2)] p-5 pt-6">
+            <div class="mb-3 grid h-[50px] w-11 place-items-center rounded-[46%_46%_42%_42%/35%_35%_60%_60%] border border-[rgba(126,77,52,.32)] bg-[rgba(198,154,76,.08)] text-xl text-rust">{p.icon}</div>
+            <h3 class="m-0 font-serif text-xl">{p.title}</h3>
+            <p class="m-0 text-sm leading-normal text-muted">{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper3 py-12">
+    <div class="mx-auto grid max-w-6xl gap-8 px-4 md:grid-cols-[.72fr_1.28fr] md:items-center md:gap-16 md:px-6">
+      <div class="reveal">
+        <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-rust">ನಮ್ಮ ಜನ · OUR PEOPLE</div>
+        <h2 class="mt-3 font-serif text-[clamp(34px,9vw,44px)] leading-tight tracking-tight">ಒಟ್ಟಾಗಿ ಮುನ್ನಡೆಸುವ ಕೈಗಳು.</h2>
+        <p class="text-[15px] text-muted">ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜದ ಹಿಂದೆ ಇರುವ ಸೇವಾ ಮನಸ್ಸುಗಳು, ಸಮರ್ಪಣೆ ಮತ್ತು ಒಗ್ಗಟ್ಟಿನ ಪರಿಚಯ.</p>
+      </div>
+      <div class="reveal" data-delay="1">
+        <div class="grid grid-cols-[96px_1fr] items-center gap-4 border-b border-[rgba(62,45,32,.18)] pb-5 mb-5">
+          <div class="relative grid aspect-[4/5] place-items-center overflow-hidden rounded-[48%_48%_5px_5px/30%_30%_5px_5px] bg-[linear-gradient(145deg,#c3a17d,#6e5540)] font-serif text-4xl text-paper">
+            ಕ
+            <span class="absolute inset-3 rounded-[inherit] border border-dotted border-[rgba(246,240,228,.4)]" aria-hidden="true"></span>
+          </div>
+          <div>
+            <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-rust">ಅಧ್ಯಕ್ಷರು · PRESIDENT</div>
+            <h3 class="my-1.5 font-serif text-2xl">ನಿಮ್ಮ ಸಮಿತಿಯ ಪರಿಚಯ</h3>
+            <p class="m-0 text-sm text-muted">ಇಲ್ಲಿ ಅಧ್ಯಕ್ಷರ ಹೆಸರು, ಅವರ ಪರಿಚಯ ಮತ್ತು ಸಮಾಜದ ಕಾರ್ಯಗಳಲ್ಲಿ ಅವರ ಪಾತ್ರವನ್ನು ಸೇರಿಸಿ.</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          {[
+            { g: 'ಸ', role: 'ಕಾರ್ಯದರ್ಶಿ' },
+            { g: 'ಖ', role: 'ಖಜಾಂಚಿ' },
+            { g: 'ಸ', role: 'ಸಮಿತಿ ಸದಸ್ಯೆ' },
+          ].map((m) => (
+            <div class="rounded-[50%_50%_10px_10px/20%_20%_10px_10px] bg-[linear-gradient(180deg,rgba(255,255,255,.35),transparent)] p-3 text-center">
+              <div class="mx-auto mb-2.5 grid h-16 w-14 place-items-center rounded-[48%_48%_44%_44%/30%_30%_60%_60%] border border-[rgba(198,154,76,.52)] bg-leaf font-serif text-xl text-[#e3c383] outline-1 outline-dotted outline-[rgba(142,57,44,.25)] outline-offset-[3px]">{m.g}</div>
+              <h4 class="m-0 font-serif text-lg">{m.role}</h4>
+              <p class="m-0 text-[13px] text-muted">ಹೆಸರು ಸೇರಿಸಿ</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative overflow-hidden bg-leaf py-14 text-paper">
+    <div class="mx-auto flex max-w-6xl flex-col items-start gap-5 px-4 md:flex-row md:items-center md:justify-between md:px-6">
+      <div>
+        <h2 class="my-2 font-serif text-[clamp(28px,8vw,44px)]">ಬನ್ನಿ, ನಮ್ಮೊಂದಿಗೆ ಬೆಸೆಯಿರಿ.</h2>
+        <p class="m-0 text-[15px] text-[rgba(246,240,228,.75)]">ಸದಸ್ಯರಾಗಲು ಅಥವಾ ಕಾರ್ಯಕ್ರಮಗಳಲ್ಲಿ ಭಾಗವಹಿಸಲು ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ.</p>
+      </div>
+      <a href="/contact" class="btn btn-gold inline-flex min-h-[46px] items-center gap-2.5 rounded-full bg-gold2 px-5 font-sans text-xs font-semibold text-ink">ಸಂಪರ್ಕಿಸಿ <span>↗</span></a>
+    </div>
+  </section>
+</Base>

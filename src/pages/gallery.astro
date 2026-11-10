@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { fmtDate } from '../lib/content';
+
+const galleries = (await getCollection('gallery'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const groups = galleries.map((g) => ({
+  id: g.id,
+  photos: g.data.photos.map((p) => ({
+    src: p.image.src,
+    caption: p.caption,
+  })),
+}));
+---
+<Base title="ಚಿತ್ರಶಾಲೆ" description="ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜದ ಕಾರ್ಯಕ್ರಮಗಳ ಫೋಟೋ ಗ್ಯಾಲರಿ.">
+  <header class="relative overflow-hidden bg-leaf px-4 pb-10 pt-32 text-paper md:px-6 md:pt-40">
+    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(220,195,135,.045) 75px 76px)" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl">
+      <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-gold2">ಚಿತ್ರಶಾಲೆ · GALLERY</div>
+      <h1 class="mt-2.5 mb-2 font-serif text-[clamp(30px,8vw,52px)] tracking-tight">ನಮ್ಮ ನೆನಪುಗಳ ಚೌಕಟ್ಟು</h1>
+      <p class="m-0 max-w-[56ch] text-[15px] text-[rgba(246,240,228,.75)]">ಕಾರ್ಯಕ್ರಮದಂತೆ ಗುಂಪು ಮಾಡಿದ ಫೋಟೋಗಳು — ಒಂದನ್ನು ಒತ್ತಿ ದೊಡ್ಡದಾಗಿ ನೋಡಿ.</p>
+    </div>
+  </header>
+
+  <section class="py-10 md:py-14">
+    <script type="application/json" id="gallery-data" set:html={JSON.stringify(groups)} />
+    <div class="mx-auto max-w-6xl px-4 md:px-6">
+      {galleries.map((g) => (
+        <div class="mb-12">
+          <div class="reveal mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h2 class="font-serif text-2xl">{g.data.title}</h2>
+            {g.data.event && <span class="text-sm text-muted">{g.data.event}</span>}
+            <span class="font-sans text-xs text-muted">{fmtDate(g.data.date)}</span>
+          </div>
+          <div class="reveal grid grid-cols-2 gap-2.5 md:grid-cols-3 lg:grid-cols-4">
+            {g.data.photos.map((p, i) => (
+              <button class="group relative overflow-hidden rounded-[20px_20px_6px_6px] border border-[rgba(126,77,52,.25)]" data-g={g.id} data-i={i} aria-label="ದೊಡ್ಡದಾಗಿ ನೋಡಿ">
+                <img src={p.image.src} alt={p.caption || g.data.title} loading="lazy" width={480} height={320}
+                  class="h-28 w-full object-cover transition-transform duration-500 group-hover:scale-105 md:h-36" />
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+      {galleries.length === 0 && <p class="py-10 text-center text-[15px] text-muted">ಇನ್ನೂ ಫೋಟೋಗಳನ್ನು ಸೇರಿಸಲಾಗಿಲ್ಲ.</p>}
+    </div>
+  </section>
+</Base>
+<div id="lightbox" class="fixed inset-0 z-[70] hidden items-center justify-center bg-[rgba(20,26,19,.94)] p-4" role="dialog" aria-modal="true" aria-label="ಫೋಟೋ ವೀಕ್ಷಣೆ">
+  <button id="lb-close" class="absolute right-4 top-4 grid size-11 place-items-center rounded-full border border-white/40 text-2xl text-white" aria-label="ಮುಚ್ಚಿರಿ">×</button>
+  <button id="lb-prev" class="absolute left-3 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-white/40 text-2xl text-white" aria-label="ಹಿಂದಿನ ಫೋಟೋ">‹</button>
+  <button id="lb-next" class="absolute right-3 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-white/40 text-2xl text-white" aria-label="ಮುಂದಿನ ಫೋಟೋ">›</button>
+  <figure class="max-h-full max-w-full text-center">
+    <img id="lb-img" src="" alt="" class="mx-auto max-h-[78svh] max-w-full rounded-lg object-contain" />
+    <figcaption id="lb-cap" class="mt-3 font-sans text-sm text-white/80"></figcaption>
+  </figure>
+</div>
+<script>
+  type Photo = { src: string; caption: string };
+  type Group = { id: string; photos: Photo[] };
+  const groups: Group[] = JSON.parse(document.getElementById('gallery-data')!.textContent!);
+  const lb = document.getElementById('lightbox')!;
+  const img = document.getElementById('lb-img') as HTMLImageElement;
+  const cap = document.getElementById('lb-cap')!;
+  let g: Photo[] = [];
+  let i = 0;
+  const show = () => { const p = g[i]; if (!p) return; img.src = p.src; img.alt = p.caption; cap.textContent = p.caption; };
+  const open = (gid: string, idx: number) => {
+    const grp = groups.find((x) => x.id === gid);
+    if (!grp) return;
+    g = grp.photos; i = idx; show();
+    lb.classList.remove('hidden'); lb.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  };
+  const close = () => { lb.classList.add('hidden'); lb.classList.remove('flex'); document.body.style.overflow = ''; };
+  document.querySelectorAll('[data-g]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const el = b as HTMLElement;
+      open(el.dataset.g!, Number(el.dataset.i));
+    }));
+  document.getElementById('lb-close')!.addEventListener('click', close);
+  document.getElementById('lb-prev')!.addEventListener('click', () => { i = (i - 1 + g.length) % g.length; show(); });
+  document.getElementById('lb-next')!.addEventListener('click', () => { i = (i + 1) % g.length; show(); });
+  lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+  document.addEventListener('keydown', (e) => {
+    if (lb.classList.contains('hidden')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') (document.getElementById('lb-prev') as HTMLElement).click();
+    if (e.key === 'ArrowRight') (document.getElementById('lb-next') as HTMLElement).click();
+  });
+</script>

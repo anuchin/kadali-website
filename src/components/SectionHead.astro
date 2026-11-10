@@ -1,0 +1,18 @@
+---
+interface Props { kicker?: string; title: string; description?: string; link?: { href: string; label: string } }
+const { kicker, title, description, link } = Astro.props;
+---
+<div class="reveal mb-6 flex flex-col gap-2.5 md:mb-9 md:flex-row md:items-end md:justify-between">
+  <div>
+    {kicker && <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-rust">{kicker}</div>}
+    <h2 class="mt-2 font-serif text-[clamp(30px,8.5vw,44px)] leading-tight tracking-tight">{title}</h2>
+    {description && <p class="mt-1 max-w-[46ch] text-[15px] text-muted">{description}</p>}
+  </div>
+  {
+    link && (
+      <a href={link.href} class="inline-flex items-center gap-2.5 self-start border-b border-rust pb-1.5 font-sans text-[13px] font-semibold whitespace-nowrap text-rust md:self-auto">
+        {link.label} <span class="transition-transform duration-200 group-hover:translate-x-1">↗</span>
+      </a>
+    )
+  }
+</div>

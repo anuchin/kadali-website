@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EventCard from '../../components/EventCard.astro';
+
+const now = Date.now();
+const all = (await getCollection('events')).sort((a, b) => b.data.start.getTime() - a.data.start.getTime());
+const upcoming = all.filter((e) => e.data.start.getTime() >= now && !e.data.cancelled).reverse();
+const past = all.filter((e) => e.data.start.getTime() < now || e.data.cancelled);
+---
+<Base title="ಕಾರ್ಯಕ್ರಮಗಳು" description="ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜದ ಕಾರ್ಯಕ್ರಮಗಳು — ಸತ್ಸಂಗ, ಹಬ್ಬ, ಸಾಹಿತ್ಯ ವಾಚನ.">
+  <header class="relative overflow-hidden bg-leaf px-4 pb-10 pt-32 text-paper md:px-6 md:pt-40">
+    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(220,195,135,.045) 75px 76px)" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl">
+      <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-gold2">ಒಟ್ಟಾಗಿ ಆಚರಿಸೋಣ · GATHER</div>
+      <h1 class="mt-2.5 mb-2 font-serif text-[clamp(30px,8vw,52px)] tracking-tight">ಕಾರ್ಯಕ್ರಮಗಳು</h1>
+      <p class="m-0 max-w-[56ch] text-[15px] text-[rgba(246,240,228,.75)]">ಸತ್ಸಂಗ, ಹಬ್ಬ, ಸಾಹಿತ್ಯ ವಾಚನ — ಸಮುದಾಯದ ಎಲ್ಲ ಸಮಾಗಮಗಳು.</p>
+    </div>
+  </header>
+
+  <section class="py-10 md:py-14">
+    <div class="mx-auto max-w-6xl px-4 md:px-6">
+      <h2 class="reveal mb-5 font-serif text-2xl">ಮುಂಬರುವವು</h2>
+      <div class="reveal grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {upcoming.length ? upcoming.map((e) => <EventCard event={e} />) : <p class="text-[15px] text-muted">ಈ ಸಮಯದಲ್ಲಿ ಯೋಜಿತ ಕಾರ್ಯಕ್ರಮಗಳಿಲ್ಲ. ಶೀಘ್ರದಲ್ಲೇ ಪ್ರಕಟವಾಗಲಿದೆ.</p>}
+      </div>
+      {
+        past.length > 0 && (
+          <div class="mt-12">
+            <h2 class="reveal mb-5 font-serif text-2xl text-muted">ಮುಗಿದ ಕಾರ್ಯಕ್ರಮಗಳು</h2>
+            <div class="reveal grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {past.map((e) => <EventCard event={e} />)}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Base>

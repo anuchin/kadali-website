@@ -1,0 +1,43 @@
+---
+import { fmtDate, eventStatus, statusLabel } from '../lib/content';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  event: CollectionEntry<'events'>;
+}
+const { event } = Astro.props;
+const { title, shortDescription, poster, start, end, venue, cancelled } = event.data;
+const status = eventStatus(start, end, cancelled);
+const glyph = title.charAt(0);
+const tone =
+  status === 'cancelled' ? 'bg-[#6d5350]' : status === 'past' ? 'bg-leaf2' : 'bg-leaf';
+---
+<a href={`/events/${event.id}/`} class="card lift arch-card flex flex-col overflow-hidden border border-[rgba(126,77,52,.32)] bg-[rgba(255,255,255,.3)]">
+  {
+    poster ? (
+      <img src={poster.src} alt={title} width={640} height={360} loading="lazy"
+        class="arch-thumb h-32 w-full flex-none object-cover md:h-36" />
+    ) : (
+      <div class={`arch-thumb relative grid h-32 flex-none place-items-center text-3xl text-[#e1bd78] md:h-36 ${tone}`}
+        style="background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 7px,transparent 7px 14px)">
+        <span class="font-serif">{glyph}</span>
+        <span class="absolute inset-2.5 rounded-[999px_999px_4px_4px] border border-[rgba(225,189,120,.4)]" aria-hidden="true"></span>
+      </div>
+    )
+  }
+  <div class="flex flex-1 flex-col gap-1.5 p-4 pb-5">
+    <small class="font-sans text-[9px] font-semibold uppercase tracking-[.14em] text-rust">{fmtDate(start)}</small>
+    <h3 class="font-serif text-[19px] leading-snug">{title}</h3>
+    <p class="m-0 text-[13px] leading-normal text-muted">{shortDescription}</p>
+    <div class="mt-auto flex items-center justify-between pt-2.5">
+      <span class:list={[
+        'rounded-full px-2.5 py-1 font-sans text-[10px] font-semibold',
+        status === 'upcoming' && 'bg-leaf text-[#f1d9a2]',
+        status === 'ongoing' && 'bg-gold text-ink',
+        status === 'past' && 'bg-[rgba(115,103,90,.2)] text-muted',
+        status === 'cancelled' && 'bg-rust text-white',
+      ]}>{statusLabel[status]}</span>
+      {venue && <span class="font-sans text-[11px] text-muted">⌖ {venue}</span>}
+    </div>
+  </div>
+</a>

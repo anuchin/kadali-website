@@ -1,0 +1,133 @@
+# Sveltia CMS configuration — ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜ
+# Docs: https://sveltiacms.app/en/docs
+
+backend:
+  name: github
+  repo: YOUR_GITHUB_USERNAME/kadali-website   # ← set during deployment
+  branch: main
+  # URL of the deployed sveltia-cms-auth Cloudflare Worker:
+  base_url: https://sveltia-cms-auth.YOUR-SUBDOMAIN.workers.dev
+
+# Drafts → review → publish (officer approves in the CMS or on GitHub)
+publish_mode: editorial_workflow
+
+# Editorial workflow needs pull-request access — documented in README
+site_url: https://kadali.example.org
+
+media_folder: public/images
+public_folder: /images
+
+# Keep phone photos small: Sveltia converts uploads to WebP; refuse anything above 4 MB
+media_library:
+  max_file_size: 4000000
+
+locale:
+  structure: single_file
+  default: kn
+
+collections:
+  # ---------- Articles ----------
+  - label: ಲೇಖನಗಳು
+    label_singular: ಲೇಖನ
+    name: articles
+    folder: src/content/articles
+    path: '{{slug}}'
+    create: true
+    slug: '{{title}}'
+    sortable_fields: [pubDate, title]
+    summary: '{{title}} · {{category}} · {{pubDate}}'
+    preview_path: articles/{{slug}}
+    fields:
+      - { label: ಶೀರ್ಷಿಕೆ, name: title, widget: string }
+      - { label: ಸಂಕ್ಷಿಪ್ತ ವಿವರಣೆ, name: excerpt, widget: text, hint: ಪಟ್ಟಿ ಪುಟದಲ್ಲಿ ಕಾಣುವ ಸಾರಾಂಶ }
+      - { label: ಮುಖಚಿತ್ರ (ಫೋಟೋ), name: cover, widget: image, required: false, hint: ಇಲ್ಲದಿದ್ದರೆ ಅಲಂಕಾರಿಕ ಚಿತ್ರ ಬರುತ್ತದೆ }
+      - { label: ಲೇಖಕಿ, name: author, widget: string, default: ಕದಳಿ ಸಮಾಜ, required: false }
+      - label: ವಿಭಾಗ
+        name: category
+        widget: select
+        default: ಸಮುದಾಯ
+        options: [ವಚನ, ಸಂಸ್ಕೃತಿ, ಸ್ಮರಣೆ, ಸೇವೆ, ಸಾಹಿತ್ಯ, ಸಮುದಾಯ]
+      - { label: ಪ್ರಕಟಣಾ ದಿನಾಂಕ, name: pubDate, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false, format: 'YYYY-MM-DD' }
+      - { label: ಮುಖ್ಯ ಲೇಖನ (ಮುಖಪುಟದಲ್ಲಿ), name: featured, widget: boolean, default: false, required: false }
+      - { label: ಎಪ್ರಣ್ಣು (ಪ್ರಕಟಿಸದಿರು), name: draft, widget: boolean, default: false, required: false }
+      - { label: ಲೇಖನ ವಿಷಯ, name: body, widget: richtext }
+
+  # ---------- Events ----------
+  - label: ಕಾರ್ಯಕ್ರಮಗಳು
+    label_singular: ಕಾರ್ಯಕ್ರಮ
+    name: events
+    folder: src/content/events
+    path: '{{slug}}'
+    create: true
+    slug: '{{title}}'
+    sortable_fields: [start, title]
+    summary: '{{title}} · {{start}}'
+    preview_path: events/{{slug}}
+    fields:
+      - { label: ಕಾರ್ಯಕ್ರಮದ ಶೀರ್ಷಿಕೆ, name: title, widget: string }
+      - { label: ಸಂಕ್ಷಿಪ್ತ ವಿವರಣೆ, name: shortDescription, widget: text }
+      - { label: ಪೋಸ್ಟರ್, name: poster, widget: image, required: false }
+      - { label: ಪ್ರಾರಂಭ (ದಿನಾಂಕ ಮತ್ತು ಸಮಯ), name: start, widget: datetime, date_format: 'YYYY-MM-DD', time_format: true, format: 'YYYY-MM-DDTHH:mm:ss' }
+      - { label: ಮುಕ್ತಾಯ (ದಿನಾಂಕ ಮತ್ತು ಸಮಯ), name: end, widget: datetime, required: false, date_format: 'YYYY-MM-DD', time_format: true, format: 'YYYY-MM-DDTHH:mm:ss' }
+      - { label: ಸ್ಥಳ, name: venue, widget: string, required: false }
+      - { label: ನಕ್ಷೆ ಲಿಂಕ್, name: mapUrl, widget: string, required: false, hint: Google Maps ಲಿಂಕ್ ಅಂಟಿಸಿ }
+      - { label: ಸಂಪರ್ಕ ಮಾಹಿತಿ, name: contact, widget: string, required: false }
+      - { label: ರದ್ದುಪಡಿಸಲಾಗಿದೆ, name: cancelled, widget: boolean, default: false, required: false }
+      - { label: ಮುಖ್ಯ ಕಾರ್ಯಕ್ರಮ (ಮುಖಪುಟದಲ್ಲಿ), name: featured, widget: boolean, default: false, required: false }
+      - { label: ಸಂಪೂರ್ಣ ವಿವರಣೆ, name: body, widget: richtext, required: false }
+
+  # ---------- Announcements ----------
+  - label: ಘೋಷಣೆಗಳು
+    label_singular: ಘೋಷಣೆ
+    name: announcements
+    folder: src/content/announcements
+    path: '{{slug}}'
+    create: true
+    slug: '{{title}}'
+    summary: '{{title}} · {{pubDate}}'
+    fields:
+      - { label: ಶೀರ್ಷಿಕೆ, name: title, widget: string }
+      - { label: ವಿವರಣೆ, name: description, widget: text }
+      - { label: ಫೋಟೋ (ಐಚ್ಛಿಕ), name: image, widget: image, required: false }
+      - { label: ಪ್ರಕಟಣಾ ದಿನಾಂಕ, name: pubDate, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false, format: 'YYYY-MM-DD' }
+      - { label: ಅವಧಿ ಮುಗಿಯುವ ದಿನಾಂಕ, name: expiryDate, widget: datetime, required: false, date_format: 'YYYY-MM-DD', time_format: false, format: 'YYYY-MM-DD', hint: ಈ ದಿನಾಂಕದ ನಂತರ ಜಾಹೀರಾತು ಕಣ್ಮರೆಯಾಗುತ್ತದೆ }
+      - { label: ಪ್ರಮುಖ, name: featured, widget: boolean, default: false, required: false }
+
+  # ---------- Gallery ----------
+  - label: ಚಿತ್ರಶಾಲೆ
+    label_singular: ಗ್ಯಾಲರಿ
+    name: gallery
+    folder: src/content/gallery
+    path: '{{slug}}'
+    create: true
+    slug: '{{title}}'
+    summary: '{{title}} · {{date}}'
+    fields:
+      - { label: ಗ್ಯಾಲರಿ ಶೀರ್ಷಿಕೆ, name: title, widget: string }
+      - { label: ಸಂಬಂಧಿತ ಕಾರ್ಯಕ್ರಮ, name: event, widget: string, required: false }
+      - { label: ದಿನಾಂಕ, name: date, widget: datetime, date_format: 'YYYY-MM-DD', time_format: false, format: 'YYYY-MM-DD' }
+      - label: ಫೋಟೋಗಳು
+        name: photos
+        widget: list
+        fields:
+          - { label: ಫೋಟೋ, name: image, widget: image }
+          - { label: ಶೀರ್ಷಿಕೆ (ಕ್ಯಾಪ್ಶನ್), name: caption, widget: string, required: false }
+
+  # ---------- Homepage content (singleton) ----------
+  - label: ಮುಖಪುಟ
+    name: site
+    folder: src/content/site
+    path: '{{slug}}'
+    create: false
+    editor:
+      preview: true
+    entries_layout: single
+    summary: 'ಮುಖಪುಟದ ವಿಷಯ'
+    fields:
+      - { label: 'ಮುಖ್ಯ ಶೀರ್ಷಿಕೆ (ಮೊದಲ ಸಾಲು)', name: heroTitle, widget: string }
+      - { label: 'ಮುಖ್ಯ ಶೀರ್ಷಿಕೆ (ಎರಡನೇ ಸಾಲು — ಚಿನ್ನದ ಬಣ್ಣ)', name: heroHighlight, widget: string, required: false }
+      - { label: ಪರಿಚಯ ವಿವರಣೆ, name: heroDescription, widget: text }
+      - { label: ಮುಖ್ಯ ಲೇಖನದ ಹೆಸರು (slug), name: featuredArticle, widget: string, required: false, hint: 'ಉದಾ: akka-vachana' }
+      - { label: ಮುಖ್ಯ ಕಾರ್ಯಕ್ರಮದ ಹೆಸರು (slug), name: featuredEvent, widget: string, required: false, hint: 'ಉದಾ: satsanga-december' }
+      - { label: ಜಾಹೀರಾತು ಬ್ಯಾನರ್ (slug), name: announcementBanner, widget: string, required: false }
+      - { label: ಆಯ್ದ ಗ್ಯಾಲರಿ (slug), name: selectedGallery, widget: string, required: false }

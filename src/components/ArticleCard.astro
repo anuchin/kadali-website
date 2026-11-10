@@ -1,0 +1,32 @@
+---
+import { fmtDate } from '../lib/content';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+  eager?: boolean;
+}
+const { article, eager = false } = Astro.props;
+const { title, excerpt, cover, pubDate, category } = article.data;
+const glyph = title.charAt(0);
+---
+<a href={`/articles/${article.id}/`} class="card lift arch-card group flex flex-col overflow-hidden border border-[rgba(126,77,52,.32)] bg-[rgba(255,255,255,.3)]">
+  {
+    cover ? (
+      <img src={cover.src} alt={title} width={640} height={360} loading={eager ? 'eager' : 'lazy'}
+        class="arch-thumb h-32 w-full flex-none object-cover md:h-36" />
+    ) : (
+      <div class="arch-thumb relative grid h-32 flex-none place-items-center bg-leaf text-3xl text-[#e1bd78] md:h-36"
+        style="background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 7px,transparent 7px 14px)">
+        <span class="font-serif">{glyph}</span>
+        <span class="absolute inset-2.5 rounded-[999px_999px_4px_4px] border border-[rgba(225,189,120,.4)]" aria-hidden="true"></span>
+      </div>
+    )
+  }
+  <div class="flex flex-1 flex-col gap-1.5 p-4 pb-5">
+    <small class="font-sans text-[9px] font-semibold uppercase tracking-[.14em] text-rust">{fmtDate(pubDate)} · {category}</small>
+    <h3 class="font-serif text-[19px] leading-snug [overflow-wrap:anywhere]">{title}</h3>
+    <p class="m-0 text-[13px] leading-normal text-muted line-clamp-3">{excerpt}</p>
+    <span class="mt-auto pt-2.5 font-sans text-[11px] text-muted">ಓದಿ ↗</span>
+  </div>
+</a>

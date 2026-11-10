@@ -1,0 +1,170 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import EventCard from '../components/EventCard.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { fmtDate, eventStatus, isActive } from '../lib/content';
+import { Image } from 'astro:assets';
+import heroArt from '../assets/hero.png';
+
+const home = (await getCollection('site')).find((s) => s.id === 'home');
+const hero = home?.data ?? {
+  heroTitle: 'ಭಕ್ತಿ ಬೇರು.',
+  heroHighlight: 'ಸಂಸ್ಕೃತಿ ಉಸಿರು.',
+  heroDescription: 'ಅಕ್ಕ ಮಹಾದೇವಿಯ ವಚನ ಪರಂಪರೆಯ ಬೆಳಕಿನಲ್ಲಿ — ಭಕ್ತಿ, ಕಲೆ, ಸೇವೆ ಹಾಗೂ ಸಾಹಿತ್ಯವನ್ನು ಬೆಸೆಯುವ ನಮ್ಮ ಸಮುದಾಯ.',
+};
+
+const allArticles = (await getCollection('articles', (a) => !a.data.draft))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const featuredArticle =
+  allArticles.find((a) => a.id === home?.data.featuredArticle) ??
+  allArticles.find((a) => a.data.featured) ?? allArticles[0];
+const latestArticles = allArticles.filter((a) => a !== featuredArticle).slice(0, 3);
+
+const allEvents = (await getCollection('events')).sort((a, b) => a.data.start.getTime() - b.data.start.getTime());
+const now = Date.now();
+const featuredEvent =
+  allEvents.find((e) => e.id === home?.data.featuredEvent) ??
+  allEvents.find((e) => e.data.featured && e.data.start.getTime() >= now) ??
+  allEvents.find((e) => e.data.start.getTime() >= now);
+const upcoming = allEvents.filter((e) => e.data.start.getTime() >= now && !e.data.cancelled && e !== featuredEvent).slice(0, 3);
+
+const banner = (await getCollection('announcements'))
+  .filter(isActive)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())[0];
+
+const galleries = await getCollection('gallery');
+const selectedGallery =
+  galleries.find((g) => g.id === home?.data.selectedGallery) ??
+  [...galleries].sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0];
+const galleryPreview = selectedGallery?.data.photos.slice(0, 6) ?? [];
+---
+<Base title="ಕದಳಿ">
+  {
+    banner && (
+      <div class="bg-gold2 px-4 py-2.5 text-center text-sm text-ink">
+        <strong class="font-semibold">{banner.data.title}:</strong> {banner.data.description}
+      </div>
+    )
+  }
+  <header class="relative isolate flex min-h-[92svh] flex-col justify-end overflow-hidden bg-leaf text-paper md:min-h-[690px] md:h-[min(860px,100svh)] md:flex-row md:items-center"
+    style="background:radial-gradient(ellipse at 74% 30%,#526344 0%,#33452e 37%,#1e2b20 78%)">
+    <div class="pointer-events-none absolute -inset-[20%]" style="background:repeating-linear-gradient(112deg,transparent 0 74px,rgba(220,195,135,.045) 75px 76px)" aria-hidden="true"></div>
+    <div class="relative z-[4] px-1 pb-2 md:w-[52%] md:pt-5">
+      <div class="hero-rise flex items-center gap-3 font-sans text-[10px] font-semibold uppercase tracking-[.2em] text-[#e1bd78]">
+        <span class="h-px w-7 bg-current"></span> Kadali Mahila Samaj · Karnataka
+      </div>
+      <h1 class="hero-rise mt-4 mb-2.5 font-serif text-[clamp(38px,10.5vw,56px)] leading-[1.15] tracking-tight md:text-[clamp(48px,6.5vw,88px)]" data-delay="1">
+        {hero.heroTitle}<br /><em class="not-italic text-[#e4c17f]">{hero.heroHighlight}</em>
+      </h1>
+      <p class="hero-rise m-0 max-w-[34ch] text-[16px] leading-relaxed text-[rgba(246,240,228,.8)] md:max-w-[44ch] md:text-[clamp(17px,1.7vw,21px)]" data-delay="2">{hero.heroDescription}</p>
+      <div class="hero-rise mt-5 flex flex-wrap gap-2.5" data-delay="3">
+        <a href="/about" class="btn btn-gold inline-flex min-h-[46px] items-center gap-2.5 rounded-full bg-gold2 px-4 font-sans text-xs font-semibold text-ink">ಕದಳಿಯನ್ನು ಅರಿಯಿರಿ <span>↗</span></a>
+        <a href="/articles" class="btn inline-flex min-h-[46px] items-center gap-2.5 rounded-full border border-[rgba(246,240,228,.42)] px-4 font-sans text-xs font-semibold">ನಮ್ಮ ಬರಹಗಳನ್ನು ಓದಿ</a>
+      </div>
+    </div>
+    <div class="relative z-[1] mt-8 w-[118%] self-center md:absolute md:right-[-1.5%] md:bottom-[-4%] md:mt-0 md:h-[92%] md:w-[min(58%,780px)]" aria-label="ಅಕ್ಕ ಮಹಾದೇವಿಯ ಚಿತ್ರ">
+      <div class="relative w-full" style="aspect-ratio:1039/627">
+        <div class="halo absolute z-0" style="top:19%;left:51%;width:33%;aspect-ratio:1;margin:-16.5% 0 0 -16.5%" aria-hidden="true"><span class="halo-glint"></span></div>
+        <Image src={heroArt} alt="ಅಕ್ಕ ಮಹಾದೇವಿ" widths={[480, 780, 1039]} sizes="(max-width: 768px) 118vw, 58vw"
+          class="absolute inset-0 h-full w-full object-contain object-bottom [filter:drop-shadow(0_20px_28px_rgba(0,0,0,.22))]" loading="eager" />
+      </div>
+    </div>
+    <a href="#intro" class="scroll-cue relative z-[4] mb-5 ml-1 mt-5 inline-flex items-center gap-2.5 font-sans text-[10px] uppercase tracking-[.15em] text-[rgba(246,240,228,.68)] md:absolute md:bottom-6 md:left-1/2 md:-translate-x-1/2"><b></b> Scroll</a>
+  </header>
+
+  <main>
+    <section id="intro" class="relative overflow-hidden py-16">
+      <div class="mx-auto max-w-6xl px-4 md:px-6">
+        <div class="grid gap-4 md:grid-cols-[.9fr_1.1fr] md:gap-[10%]">
+          <div class="reveal">
+            <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-rust">ನಮ್ಮ ಸಮಾಜ · OUR PURPOSE</div>
+            <h2 class="mt-3 mb-1 font-serif text-[clamp(34px,9.5vw,44px)] leading-[1.18] tracking-tight">ಒಂದು ಮನಸ್ಸು.<br /><span class="text-rust">ಅನೇಕ ಹೃದಯಗಳು.</span></h2>
+          </div>
+          <div class="reveal text-[17px] leading-[1.75]" data-delay="1">
+            <p class="m-0 max-w-[60ch]">ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜವು ಭಕ್ತಿ, ಸಂಸ್ಕೃತಿ, ಸಾಹಿತ್ಯ ಮತ್ತು ಸಮಾಜಸೇವೆಯ ಮೂಲಕ ಮಹಿಳೆಯರನ್ನು ಒಂದೆಡೆ ಸೇರಿಸುವ <strong class="font-normal text-rust">ಒಂದು ಜೀವಂತ ವೇದಿಕೆ.</strong> ನಮ್ಮ ಪರಂಪರೆಯನ್ನು ಗೌರವಿಸುತ್ತಾ, ಮುಂದಿನ ಪೀಳಿಗೆಗೆ ಅದನ್ನು ಪ್ರೀತಿಯಿಂದ ತಲುಪಿಸುವುದು ನಮ್ಮ ಪಯಣ.</p>
+            <a href="/contact" class="group mt-4 inline-flex items-center gap-2.5 border-b border-rust pb-1.5 font-sans text-[13px] font-semibold text-rust">ನಮ್ಮೊಂದಿಗೆ ಕೈಜೋಡಿಸಿ <span class="transition-transform duration-300 group-hover:translate-x-1">↗</span></a>
+          </div>
+        </div>
+        <div class="mt-8 flex gap-3 overflow-x-auto px-4 pt-1.5 pb-3 snap-x snap-mandatory [-mx-4] [scrollbar-width:none] md:grid md:grid-cols-4 md:gap-0 md:overflow-visible md:border-y md:border-[rgba(62,45,32,.18)] md:px-0 md:pb-0 md:pt-0 md:snap-none">
+          {[
+            { icon: '❋', title: 'ಭಕ್ತಿ', desc: 'ಆಧ್ಯಾತ್ಮ, ವಚನಗಳು ಮತ್ತು ಒಳಗಿನ ಅರಿವಿನ ಪಯಣ.' },
+            { icon: '✳', title: 'ಸಂಸ್ಕೃತಿ', desc: 'ಹಬ್ಬ, ಕಲೆ, ಸಂಪ್ರದಾಯ ಮತ್ತು ಜೀವಂತ ಆಚರಣೆಗಳು.' },
+            { icon: '♧', title: 'ಸಮಾಜ ಸೇವೆ', desc: 'ಪರಸ್ಪರ ಬೆಂಬಲ, ಕಾಳಜಿ ಮತ್ತು ಸಮುದಾಯದ ಬೆಳವಣಿಗೆ.' },
+            { icon: '✎', title: 'ಸಾಹಿತ್ಯ', desc: 'ವಚನ, ಬರಹ, ನೆನಪುಗಳು ಮತ್ತು ಮಹಿಳೆಯರ ಧ್ವನಿ.' },
+          ].map((p, i) => (
+            <article class="reveal snap-start flex-none basis-[76%] max-w-[280px] rounded-[80px_80px_12px_12px] border border-[rgba(126,77,52,.32)] bg-[rgba(255,255,255,.2)] p-5 pt-6 md:basis-auto md:max-w-none md:rounded-none md:border-0 md:border-l md:border-l-[rgba(62,45,32,.18)] md:p-0 md:px-6 md:py-7 md:first:border-l-0 md:first:pl-0" data-delay={String(i)}>
+              <div class="mb-3 grid h-[50px] w-11 place-items-center rounded-[46%_46%_42%_42%/35%_35%_60%_60%] border border-[rgba(126,77,52,.32)] bg-[rgba(198,154,76,.08)] text-xl text-rust">{p.icon}</div>
+              <h3 class="m-0 font-serif text-xl">{p.title}</h3>
+              <p class="m-0 text-sm leading-normal text-muted">{p.desc}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-paper2 py-16">
+      <div class="mx-auto max-w-6xl px-4 md:px-6">
+        <SectionHead kicker="ಒಟ್ಟಾಗಿ ಆಚರಿಸೋಣ · GATHER" title="ಮುಂಬರುವ ಕಾರ್ಯಕ್ರಮಗಳು" description="ಒಟ್ಟಾಗಿ ಸೇರುವ ಕ್ಷಣಗಳೇ ಸಮುದಾಯವನ್ನು ಕಟ್ಟುತ್ತವೆ." link={{ href: '/events', label: 'ಎಲ್ಲ ಕಾರ್ಯಕ್ರಮಗಳು' }} />
+        <div class="grid gap-4 md:grid-cols-2">
+          {featuredEvent && (
+            <div class="reveal flex flex-col overflow-hidden rounded-[4px_4px_18px_18px] bg-leaf text-paper shadow-[0_20px_60px_rgba(61,48,31,.09)] md:col-span-2 md:flex-row">
+              <div class="relative grid h-44 flex-none place-items-center overflow-hidden bg-[linear-gradient(135deg,#3d4a30,#1f2c20)] text-7xl text-gold2 [filter:drop-shadow(0_0_28px_rgba(223,189,122,.25))] md:w-[36%] md:h-auto">🪔
+                <span class="absolute inset-[8%_26%_5%] rounded-[50%_50%_44%_44%/36%_36%_58%_58%] border border-dotted border-[rgba(223,189,122,.45)]" aria-hidden="true"></span>
+              </div>
+              <div class="flex flex-col justify-center p-6 md:p-9">
+                <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-gold2">ಮುಂದಿನ ಕಾರ್ಯಕ್ರಮ · FEATURED</div>
+                <h3 class="my-3 font-serif text-[clamp(26px,7vw,40px)] leading-tight"><a href={`/events/${featuredEvent.id}/`} class="hover:underline">{featuredEvent.data.title}</a></h3>
+                <p class="m-0 mb-4 text-[15px] text-[rgba(246,240,228,.75)]">{featuredEvent.data.shortDescription}</p>
+                <div class="grid gap-1.5 font-sans text-xs text-[#e4c98f]">
+                  <span>◷ {fmtDate(featuredEvent.data.start)}</span>
+                  {featuredEvent.data.venue && <span>⌖ {featuredEvent.data.venue}</span>}
+                </div>
+              </div>
+            </div>
+          )}
+          {upcoming.map((e) => <div class="reveal"><EventCard event={e} /></div>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="bead-rule py-16">
+      <div class="mx-auto max-w-6xl px-4 md:px-6">
+        <SectionHead kicker="ಕದಳಿಯ ಬರಹಗಳು · THE JOURNAL" title="ನಮ್ಮ ಕಥೆಗಳು, ನಮ್ಮ ಮಾತು" description="ವಚನದ ಚಿಂತನೆಗಳಿಂದ ಸದಸ್ಯೆಯರ ನೆನಪುಗಳವರೆಗೆ." link={{ href: '/articles', label: 'ಎಲ್ಲ ಬರಹಗಳು' }} />
+        <div class="reveal grid gap-4 md:grid-cols-3">
+          {featuredArticle && <ArticleCard article={featuredArticle} eager />}
+          {latestArticles.map((a) => <ArticleCard article={a} />)}
+        </div>
+      </div>
+    </section>
+
+    {
+      selectedGallery && galleryPreview.length > 0 && (
+        <section class="bg-paper3 py-16">
+          <div class="mx-auto max-w-6xl px-4 md:px-6">
+            <SectionHead kicker="ಚಿತ್ರಶಾಲೆ · GALLERY" title={selectedGallery.data.title} description={selectedGallery.data.event} link={{ href: '/gallery', label: 'ಪೂರ್ಣ ಚಿತ್ರಶಾಲೆ' }} />
+            <div class="reveal grid grid-cols-2 gap-2.5 md:grid-cols-3">
+              {galleryPreview.map((p) => (
+                <img src={p.image.src} alt={p.caption || selectedGallery!.data.title} loading="lazy" width={480} height={320}
+                  class="arch-thumb h-28 w-full object-cover md:h-40" />
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <section class="relative overflow-hidden bg-leaf py-14 text-paper md:py-[72px]">
+      <span class="pointer-events-none absolute right-[6%] top-[-70px] font-serif text-[280px] leading-none text-[rgba(223,189,122,.07)]" aria-hidden="true">ಕ</span>
+      <div class="reveal mx-auto flex max-w-6xl flex-col items-start gap-5 px-4 md:flex-row md:items-center md:justify-between md:px-6">
+        <div>
+          <div class="font-sans text-[11px] font-semibold uppercase tracking-[.19em] text-gold2">ನಿಮ್ಮನ್ನು ಸ್ವಾಗತಿಸುತ್ತೇವೆ</div>
+          <h2 class="my-2 font-serif text-[clamp(30px,8.5vw,56px)] leading-tight">ಬನ್ನಿ, ನಮ್ಮೊಂದಿಗೆ ಬೆಸೆಯಿರಿ.</h2>
+          <p class="m-0 max-w-[52ch] text-[15px] text-[rgba(246,240,228,.75)]">ನಮ್ಮ ಕಾರ್ಯಕ್ರಮಗಳ ಬಗ್ಗೆ ತಿಳಿಯಲು, ಸದಸ್ಯರಾಗಲು ಅಥವಾ ನಿಮ್ಮ ಬರಹಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ.</p>
+        </div>
+        <a href="/contact" class="btn btn-gold inline-flex min-h-[46px] flex-none items-center gap-2.5 rounded-full bg-gold2 px-5 font-sans text-xs font-semibold text-ink">ಸಂಪರ್ಕಿಸಿ <span>↗</span></a>
+      </div>
+    </section>
+  </main>
+</Base>

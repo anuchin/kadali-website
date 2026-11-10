@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+const {
+  title,
+  description = 'ಕದಳಿ ಮಹಿಳಾ ಸಮಾಜ — ಭಕ್ತಿ, ಸಂಸ್ಕೃತಿ, ಸೇವೆ ಮತ್ತು ಸಾಹಿತ್ಯದ ಮೂಲಕ ಮಹಿಳೆಯರನ್ನು ಒಗ್ಗೂಡಿಸುವ ಸಮುದಾಯ.',
+  ogImage,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const fullTitle = title === 'ಕದಳಿ' ? title : `${title} — ಕದಳಿ`;
+---
+<!doctype html>
+<html lang="kn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#33452e" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content="kn_IN" />
+  {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.site)} />}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Tiro+Kannada:ital@0;1&family=Hubballi&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <SiteNav />
+  <main>
+    <slot />
+  </main>
+  <SiteFooter />
+  <script>
+    // scroll reveals (kept tiny; reduced motion handled in CSS)
+    const els = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      }, { threshold: 0.12, rootMargin: '0px 0px -35px 0px' });
+      els.forEach((el) => io.observe(el));
+    } else els.forEach((el) => el.classList.add('in'));
+  </script>
+</body>
+</html>
