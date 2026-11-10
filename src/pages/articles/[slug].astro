@@ -12,9 +12,12 @@ const { article } = Astro.props;
 const { Content } = await render(article);
 const { title, excerpt, cover, author, category, pubDate } = article.data;
 
-const related = (await getCollection('articles', (a) => !a.data.draft && a.id !== article.id && a.data.category === category))
-  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
-  .slice(0, 3);
+const sameCategory = (await getCollection('articles', (a) => !a.data.draft && a.id !== article.id && a.data.category === category))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const related = (sameCategory.length > 0 ? sameCategory :
+  (await getCollection('articles', (a) => !a.data.draft && a.id !== article.id))
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+).slice(0, 3);
 const shareUrl = encodeURIComponent(new URL(Astro.url.pathname, Astro.site).toString());
 const shareText = encodeURIComponent(title);
 ---
