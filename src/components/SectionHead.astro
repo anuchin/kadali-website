@@ -10,7 +10,7 @@ const { kicker, title, description, link } = Astro.props;
   </div>
   {
     link && (
-      <a href={link.href} class="inline-flex items-center gap-2.5 self-start border-b border-rust pb-1.5 font-sans text-[13px] font-semibold whitespace-nowrap text-rust md:self-auto">
+      <a href={link.href} class="arrow-link group inline-flex items-center gap-2.5 self-start border-b border-rust pb-1.5 font-sans text-[13px] font-semibold whitespace-nowrap text-rust md:self-auto">
         {link.label} <span class="transition-transform duration-200 group-hover:translate-x-1">↗</span>
       </a>
     )

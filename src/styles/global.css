@@ -110,6 +110,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .prose-kn img { border-radius: 16px 16px 6px 6px; margin: 1.5em 0; }
 .prose-kn a { color: var(--color-rust); text-decoration: underline; text-underline-offset: 3px; }
 
+/* touch comfort: links, chips and share buttons get a 44px hit area on phones */
+@media (max-width: 767px) {
+  .arrow-link { min-height: 44px; align-items: center; }
+  .tag { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .scroll-cue { min-height: 44px; align-items: center; }
+  .back-link { min-height: 44px; display: inline-flex; align-items: center; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; animation-delay: 0s !important; }
